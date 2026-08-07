@@ -1,0 +1,4 @@
+interface:
+  display_name: "Send Books to Kindle"
+  short_description: "Find legal ebooks and deliver them to Kindle"
+  default_prompt: "Use $kindle-book-sender to find and send a legal ebook to my Kindle."
