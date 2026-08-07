@@ -25,24 +25,43 @@ Search for an authorized copy first. Accept public-domain, openly licensed, publ
 
 Do not scrape, download, convert, or email a pirated copy, a DRM-protected library/retailer file, or a file whose authorization is unclear. For a copyrighted book without a legal free download, offer the library, Kindle store, publisher, or other official route instead. A library loan is not permission to export its ebook file.
 
-## Delivery workflow
+## Kindle quality gate
 
-1. Search for an authorized **EPUB**. Prefer a no-images/standard edition when images add unnecessary size.
+Before emailing **any EPUB**—including a publisher download, a conversion, or a collection built from web pages—run:
+
+```bash
+python3 scripts/verify_ebook.py /absolute/path/book.epub
+```
+
+Treat a failed check as a hard stop; repair the EPUB and rerun validation before delivery.
+
+- **Cover:** Require an embedded PNG or JPEG cover image. An SVG-only cover is not acceptable because Kindle can show a generic thumbnail instead. If the book has no acceptable cover, create and embed a simple 1600×2560 PNG title card with:
+
+  ```bash
+  python3 scripts/add_epub_cover.py /absolute/path/book.epub --output /absolute/path/book-with-cover.epub --title "Book title" --author "Author"
+  ```
+
+  Then validate the new file before delivery.
+- **Reading layout:** Require full-width, reflowable prose. Remove imported web-page shells, spacer tables, `width` attributes, and fixed-pixel CSS from article containers before conversion. In particular, never retain narrow legacy layout tables such as `width="435"` around body text.
+- **Visual release check:** Inspect the cover and a representative early, middle, and final chapter in Kindle Previewer when available. Confirm the cover title is legible, the prose occupies the normal reading width, headings start each chapter, and there is no clipping, horizontal scrolling, or narrow vertical text column. Do not send an EPUB merely because the ZIP opens.
+
+1. Search for an authorized **EPUB**. Prefer a standard, reflowable edition when images add unnecessary size.
 2. Download it to a temporary directory. Keep attachments below 18 MB before email encoding. Verify the file:
 
    ```bash
    python3 scripts/verify_ebook.py /absolute/path/book.epub
    ```
 
-3. If validation passes, email the EPUB as an attachment. Use the book title as the subject; do **not** use `convert` for EPUB.
-4. If no suitable EPUB exists but there is a lawful **PDF**, validate the PDF and email it with the subject exactly:
+3. If the EPUB has no acceptable cover, add the required PNG title card and set it as the EPUB cover, then validate again.
+4. If validation passes, email the EPUB as an attachment. Use the book title as the subject; do **not** use `convert` for EPUB.
+5. If no suitable EPUB exists but there is a lawful **PDF**, validate the PDF and email it with the subject exactly:
 
    ```text
    convert
    ```
 
    Amazon's email conversion service converts a PDF to a Kindle-friendly document. This works best for simple, text-led PDFs; preserve the source PDF as the fallback because complex layouts can convert poorly.
-5. If the PDF conversion route is unsuitable or fails, manually convert only a lawful, non-DRM PDF. Use Calibre's `ebook-convert`, then validate the EPUB and visually inspect a representative conversion before delivery:
+6. If the PDF conversion route is unsuitable or fails, manually convert only a lawful, non-DRM PDF. Use Calibre's `ebook-convert`, then validate the EPUB and visually inspect a representative conversion before delivery:
 
    ```bash
    ebook-convert /absolute/path/book.pdf /absolute/path/book.epub
@@ -53,11 +72,11 @@ Do not scrape, download, convert, or email a pirated copy, a DRM-protected libra
 
    Inspect the rendered pages for missing text, bad chapter breaks, clipping, or garbled characters. Do not claim a manual conversion is good without this check.
    If `ebook-convert` is unavailable, do not install a converter or invent an EPUB; offer the PDF-with-`convert` route instead.
-6. Send through an account whose primary address exactly matches the approved sender. Verify the send result shows it was sent, but say Kindle delivery may take a few minutes; do not claim the Kindle received it unless there is evidence.
+7. Send through an account whose primary address exactly matches the approved sender. Verify the send result shows it was sent, but say Kindle delivery may take a few minutes; do not claim the Kindle received it unless there is evidence.
 
 ## Email delivery
 
-Use any available email capability that can send from the user's approved sender address. When Composio is available, read [references/composio-delivery.md](references/composio-delivery.md) and use its direct local-file attachment route; it avoids fragile intermediary upload steps.
+Read [references/composio-delivery.md](references/composio-delivery.md) before sending through Composio. Use its direct local-file attachment route when available. It avoids fragile intermediary upload steps.
 
 Never expose private Kindle addresses, approved sender addresses, tokens, or raw mail IDs in normal status updates.
 

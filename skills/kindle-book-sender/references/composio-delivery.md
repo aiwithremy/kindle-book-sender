@@ -5,6 +5,8 @@
 - Confirm the Gmail connection is active and select the account whose primary address exactly matches the user's approved sender.
 - Use the Kindle address only as the recipient. Do not add other recipients unless the user asks.
 - Validate the attachment first with `scripts/verify_ebook.py`.
+- Do not proceed unless validation confirms a PNG/JPEG cover and no fixed-width reading layout. If a cover is missing or SVG-only, add a plain PNG title card and revalidate. If the book came from HTML, strip the source site's layout tables and fixed-pixel widths before rebuilding the EPUB.
+- Visually inspect the cover and representative chapters before the dry run whenever a preview tool is available. A file that opens is not proof that it reads correctly on a Kindle.
 - Keep the attachment under 18 MB. Gmail's practical limit is about 25 MB after encoding.
 
 ## Preferred local-file route

@@ -28,7 +28,8 @@ Prefer a manual install? [Download the ZIP](https://github.com/aiwithremy/kindle
 
 - Finds only public-domain, openly licensed, publisher-authorized, or user-provided files.
 - Asks for your Send-to-Kindle email address and the email address Amazon has approved to send from.
-- Verifies EPUB and PDF files before delivery.
+- Verifies EPUB and PDF files before delivery, including a Kindle-safe raster cover and reflowable reading layout.
+- Creates a simple title cover when an EPUB lacks one, and rejects narrow fixed-width web layouts that would render badly on Kindle.
 - Prefers EPUB for adjustable text; uses `convert` for lawful PDF fallback.
 - Checks a manual PDF-to-EPUB conversion before sending it.
 
