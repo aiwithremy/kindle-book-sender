@@ -216,3 +216,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ============================================================
+# Secrets & credentials — never commit (2026-08-09 audit)
+# ============================================================
+.env
+.env.*
+!.env.example
+!.env*.example
+*credentials*
+*.pem
+*.key
+*.p12
+*token*
+!*.tokens.ts
+!*tokens*.css
+!*tokens*.json
+secrets/
+.secrets/
+service-account*.json
